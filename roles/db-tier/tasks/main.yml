@@ -1,0 +1,25 @@
+#- name: deploy postgres
+#  gather_facts: false
+#  become: true
+#  hosts: appdbs
+#  tasks:
+---
+  - name: install progress
+    yum:
+      name: postgresql-server
+      state: latest
+
+  - name: initilize postgres
+    command: postgresql-setup initdb
+    run_once: true
+    ignore_errors: yes
+
+  - name: enable postgresql at boot and start db.
+    systemd:
+      name: postgresql
+      enabled: yes
+      state: started
+
+  - name: tell user to finish setting up postgres
+    debug:
+      msg: "Either uncomment the postgres setup or manually login and initialize"

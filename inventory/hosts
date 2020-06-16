@@ -1,0 +1,26 @@
+[frontends] 
+frontend1 ansible_host=frontend1."{{ $GUID }}".internal
+
+[frontends:vars]
+GUID="{{ lookup('env','GUID') }}"
+
+[apps] 
+app1 ansible_host=app1."{{ $GUID }}".internal
+app2 ansible_host=app2."{{ $GUID }}".internal
+
+[apps:vars]
+GUID="{{ lookup('env','GUID') }}"
+
+[appdbs] 
+appdb1 ansible_host=appdb1."{{ $GUID }}".internal
+
+[appdbs:vars]
+GUID="{{ lookup('env','GUID') }}"
+
+[internal:children]
+frontends
+apps
+appdbs
+
+[internal:vars]
+GUID="{{ lookup('env','GUID') }}"
